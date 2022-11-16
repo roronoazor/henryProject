@@ -1,0 +1,4 @@
+100, Lionel Messi, 4, Argentina, 70.4, 170, 35, 5,4,5,4,3
+101, Cristiano Ronaldo, 3, Portugal, 82.3, 175, 37, 3,2,3,2,4
+106, Eden Hazard, 3, Belgium, 72, 173, 30 , 5,5,5,4,4
+107, Mo Salah, 1, Egypt, 75, 176, 28, 4,4,4,5,3

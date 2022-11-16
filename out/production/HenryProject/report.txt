@@ -1,0 +1,14 @@
+################## COMPETITORS LIST ########################
+Competitor Number: 100, Competitor Name: Lionel Messi, Age: 35,Height: 170.00 (cm), Weight: 70.40 (kg), Country: Argentina, level: 4, and received these scores: 5,4,5,4,3, which gives him an overall score of 4.20
+Competitor Number: 101, Competitor Name: Cristiano Ronaldo, Age: 37,Height: 175.00 (cm), Weight: 82.30 (kg), Country: Portugal, level: 3, and received these scores: 3,2,3,2,4, which gives him an overall score of 2.80
+Competitor Number: 106, Competitor Name: Eden Hazard, Age: 30,Height: 173.00 (cm), Weight: 72.00 (kg), Country: Belgium, level: 3, and received these scores: 5,5,5,4,4, which gives him an overall score of 4.60
+Competitor Number: 107, Competitor Name: Mo Salah, Age: 28,Height: 176.00 (cm), Weight: 75.00 (kg), Country: Egypt, level: 1, and received these scores: 4,4,4,5,3, which gives him an overall score of 4.00
+############################################################
+Competitors Statistic Report
+#######################################
+Max Score is : 4.6
+Min Score is : 2.8
+Average score is : 3.9
+#####################################################
+The Competitor with the highest score was Eden Hazard with a score of 4.6
+#####################################################
