@@ -2,7 +2,7 @@ import java.util.HashMap;
 
 abstract class OHCompetitorClass {
 
-    private int competitorNumber;               // competitors ID e.g. 101
+    private String competitorNumber;
     private Name competitorName;
     private int age;
     private double height;
@@ -43,7 +43,7 @@ abstract class OHCompetitorClass {
         return this.competitorEmail;
     }
 
-    public int getCompetitorNumber() {
+    public String getCompetitorNumber() {
         return this.competitorNumber;
     }
 
@@ -78,7 +78,7 @@ abstract class OHCompetitorClass {
         return this.competitorName;
     }
 
-    public int setCompetitorNumber(int newNumber) {
+    public String setCompetitorNumber(String newNumber) {
         this.competitorNumber = newNumber;
         return this.competitorNumber;
     }
@@ -126,7 +126,7 @@ abstract class OHCompetitorClass {
         // get all the values of the competitor class,
         // and store them in local variables
         String competitorName = this.getCompetitorName();
-        int competitorNumber = this.getCompetitorNumber();
+        String competitorNumber = this.getCompetitorNumber();
         int age = this.getAge();
         double height = this.getHeight();
         double weight = this.getWeight();
@@ -135,7 +135,7 @@ abstract class OHCompetitorClass {
 
         // use the variable to format the text
         String fullDetails = String.format(
-                "Competitor Number: %d, Competitor Name: %s, Age: %d," +
+                "Competitor Number: %s, Competitor Name: %s, Age: %d," +
                         "Height: %.2f (cm), Weight: %.2f (kg), Country: %s, level: %d, " +
                         "and received these scores: %s, which gives him an overall score of %.2f",
                 competitorNumber, competitorName, age, height, weight, country,
@@ -151,17 +151,40 @@ abstract class OHCompetitorClass {
 
         // get the values that will make the short details text
         String competitorName = this.getCompetitorName();
-        int competitorNumber = this.getCompetitorNumber();
+        String competitorNumber = this.getCompetitorNumber();
         float overallScore = this.getOverallScore();
 
         // format the string with required values
         String shortDetails =  String.format(
-                "CN %d (%s) has overall score %.2f",
+                "CN %s (%s) has overall score %.2f",
                 competitorNumber, competitorName, overallScore
         );
 
         // return the text
         return shortDetails;
+    }
+
+
+    public String getLevelString(){
+
+        if (this.level <= 1){
+            return "Beginner";
+        }else if (this.level == 2){
+            return "Amateur";
+        }else {
+            return "Expert";
+        }
+
+    }
+
+    public String getScoresString(){
+        return (
+                this.scores[0] + ", " +
+                this.scores[1] + ", " +
+                this.scores[2] + ", " +
+                this.scores[3] + ", " +
+                this.scores[4] + ", "
+                );
     }
 
 }

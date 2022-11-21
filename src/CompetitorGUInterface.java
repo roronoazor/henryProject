@@ -40,7 +40,7 @@ public class CompetitorGUInterface {
                 JPanel panel = new JPanel();
                 JFrame formFrame = new JFrame("Competitor Registration Form");
 
-                formFrame.setSize(new Dimension(500,500));
+                formFrame.setSize(new Dimension(600,500));
                 formFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 formFrame.add(panel);
 
@@ -106,7 +106,7 @@ public class CompetitorGUInterface {
                 panel.add(competitorWeight);
 
                 JLabel notificationMessage = new JLabel("");
-                notificationMessage.setBounds(10, 230, 600, 25);
+                notificationMessage.setBounds(10, 230, 1000, 25);
                 panel.add(notificationMessage);
 
                 JButton registerButton = new JButton("Submit");
@@ -153,7 +153,8 @@ public class CompetitorGUInterface {
                         String vfirstName = vName.split(" ")[0];
                         String vlastName = vName.split(" ")[1];
 
-                        competitorList.addCompetitor(
+                        notificationMessage.setText("");
+                        String response = competitorList.addCompetitor(
                                 vfirstName,
                                 vlastName,
                                 vEmail,
@@ -164,6 +165,9 @@ public class CompetitorGUInterface {
                                 "",
                                 vLevel
                         );
+                        notificationMessage.setText(response);
+                        System.out.println(competitorList.getCompetitorsFullList());
+
                     }
                 });
 
@@ -294,13 +298,17 @@ public class CompetitorGUInterface {
                 label.setBounds(10,20, 265, 25);
                 panel.add(label);
 
-                JTextField competitorNumber = new JTextField(20);
-                competitorNumber.setBounds(220, 20, 165, 25);
-                panel.add(competitorNumber);
+                JTextField competitorNumberField = new JTextField(20);
+                competitorNumberField.setBounds(220, 20, 165, 25);
+                panel.add(competitorNumberField);
 
                 JButton searchButton = new JButton("Search");
                 searchButton.setBounds(390, 20, 95, 25);
                 panel.add(searchButton);
+
+                JLabel notificationLabel = new JLabel("");
+                notificationLabel.setBounds(10,35, 265, 25);
+                panel.add(notificationLabel);
 
                 JLabel competitorName = new JLabel("Competitor Name");
                 competitorName.setBounds(10,50, 265, 25);
@@ -346,10 +354,48 @@ public class CompetitorGUInterface {
                 scores.setBounds(10,200, 265, 25);
                 panel.add(scores);
 
+                JLabel scoresLabel = new JLabel("");
+                scoresLabel.setBounds(220,170, 265, 25);
+                panel.add(scoresLabel);
+
+                JLabel email = new JLabel("Email");
+                email.setBounds(10,230, 265, 25);
+                panel.add(scores);
+
+                JLabel emailLabel = new JLabel("");
+                emailLabel.setBounds(220,200, 265, 25);
+                panel.add(emailLabel);
+
                 /** on search */
                 searchButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent actionEvent) {
+                        notificationLabel.setText("");
+                        competitorNameLabel.setText("");
+                        competitorNumberLabel.setText("");
+                        ageLabel.setText("");
+                        categoryLabel.setText("");
+                        levelLabel.setText("");
+                        scoresLabel.setText("");
+                        emailLabel.setText("");
+
+                        String competitorNumber = competitorNumberField.getText().trim();
+                        OHCompetitorClass competitor = competitorList.findByCompetitorNumber(competitorNumber);
+
+                        if (competitor == null){
+                            notificationLabel.setText("Not Found");
+                            return;
+                        }
+
+                        notificationLabel.setText("Found");
+                        competitorNameLabel.setText(competitor.getCompetitorName());
+                        competitorNumberLabel.setText(competitor.getCompetitorNumber());
+                        ageLabel.setText(Integer.toString(competitor.getAge()));
+                        categoryLabel.setText(competitor.getCategory());
+                        levelLabel.setText(competitor.getLevelString());
+                        scoresLabel.setText(competitor.getScoresString());
+                        emailLabel.setText(competitor.getCompetitorEmail());
+
 
                     }
                 });

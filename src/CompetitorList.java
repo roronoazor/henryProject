@@ -1,4 +1,6 @@
 import java.text.*;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -46,7 +48,35 @@ public class CompetitorList {
         return (header + body + footer);
     }
 
-    public ArrayList<OHCompetitorClass> addCompetitor(
+    public int getAgeFromDobString(String dateOfString){
+        LocalDate dob = LocalDate.parse(dateOfString);
+        LocalDate curDate = LocalDate.now();
+        return Period.between(dob, curDate).getYears();
+    }
+
+    public String generateCompetitorNumber(OHCompetitorClass competitor){
+
+        // format used
+        // YYYY/category/serialNumber
+
+        // this allows for a million competitors with unique serialNumber
+        String serialNumber = String.format("%06d", (this.competitors.size() + 1));
+        String category = competitor.getCategory();
+        String categoryCode = "";
+
+        if (category.equalsIgnoreCase("running")){
+            categoryCode = "101";
+        }else if (category.equalsIgnoreCase("swimming")){
+            categoryCode = "102";
+
+        }else{
+            categoryCode = "103";
+        }
+
+        return "2022/" + categoryCode + "/" + serialNumber;
+    }
+
+    public String addCompetitor(
             String firstName,
             String lastName,
             String competitorEmail,
@@ -60,29 +90,54 @@ public class CompetitorList {
 
         int[] scores = {0,0,0,0,0};
         Name name = new Name(firstName, lastName);
+        Double vHeight = Double.parseDouble(height);
+        Double vWeight = Double.parseDouble(weight);
+        int vAge = this.getAgeFromDobString(dob);
+
+        OHCompetitorClass competitor;
+
         // at this point, this data has already been cleaned
         // convert the data to the valid
         // data types
-        OHRunnerCompetitorClass competitor = new OHRunnerCompetitorClass(
-                name,
-                competitorEmail,
-                12,
-                23.1,
-                12.3,
-                "Nigeria",
-                2,
-                scores
-        );
         if (category.equalsIgnoreCase("running")){
-
+            competitor = new OHRunnerCompetitorClass(
+                    name,
+                    competitorEmail,
+                    vAge,
+                    vHeight,
+                    vWeight,
+                    "",
+                    2,
+                    scores
+            );
         }else if (category.equalsIgnoreCase("swimming")){
-
+            competitor = new OHSwimmerCompetitorClass(
+                    name,
+                    competitorEmail,
+                    vAge,
+                    vHeight,
+                    vWeight,
+                    "",
+                    2,
+                    scores
+            );
         }else {
-
+            competitor = new OHJumperCompetitorClass(
+                    name,
+                    competitorEmail,
+                    vAge,
+                    vHeight,
+                    vWeight,
+                    "",
+                    2,
+                    scores
+            );
         }
-        System.out.println("firing");
+        String competitorNumber = this.generateCompetitorNumber(competitor);
+        competitor.setCompetitorNumber(competitorNumber);
+
         this.competitors.add(competitor);
-        return this.competitors;
+        return "Success!!! The competitor's number is: " + competitor.getCompetitorNumber()+ " please note it down";
     }
 
     public float[] getCompetitorsScores() {
@@ -139,15 +194,18 @@ public class CompetitorList {
         }
     }
 
-    public void findByCompetitorNumber(String competitorNumber){
+    public OHCompetitorClass findByCompetitorNumber(String competitorNumber){
      boolean found = false;
      String details = "";
+     OHCompetitorClass competitorObject = null;
 
         for ( OHCompetitorClass competitor:
                 this.competitors) {
-            if (Integer.toString(competitor.getCompetitorNumber()).equals(competitorNumber)){
+            if (competitor.getCompetitorNumber().equals(competitorNumber)){
                 found = true;
                 details = competitor.getShortDetails();
+                competitorObject = competitor;
+                System.out.println("this was found");
                 break;
             }
         }
@@ -161,6 +219,7 @@ public class CompetitorList {
          if (!found){
              System.out.println("competitor with number " + competitorNumber + " not found");
          }
+         return competitorObject;
     }
 
 
@@ -210,15 +269,15 @@ public class CompetitorList {
         }
 
         try{
-            Float.parseFloat(height);
+            Double.parseDouble(height);
         }catch(NumberFormatException ex){
-            return "Please enter a valid number or float for height";
+            return "Please enter a valid number or double for height";
         }
 
         try{
-            Float.parseFloat(weight);
+            Double.parseDouble(weight);
         }catch(NumberFormatException ex){
-            return "Please enter a valid number or float for weight";
+            return "Please enter a valid number or double for weight";
         }
 
         try{
