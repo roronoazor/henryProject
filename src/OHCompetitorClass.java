@@ -1,6 +1,6 @@
 import java.util.HashMap;
 
-public class OHCompetitorClass {
+abstract class OHCompetitorClass {
 
     private int competitorNumber;               // competitors ID e.g. 101
     private Name competitorName;
@@ -9,11 +9,13 @@ public class OHCompetitorClass {
     private double weight;
     private String country;
     private int level;                      // group stage - 1, quarter final - 2, semifinal - 3, final - 4
-    private int[] scores;                   // array
+    private int[] scores;
+    // array
+    private String competitorEmail;
 
     public OHCompetitorClass(              // declare3 the parameters
          Name competitorName,
-         int competitorNumber,
+         String competitorEmail,
          int age,
          double height,
          double weight,
@@ -23,18 +25,22 @@ public class OHCompetitorClass {
     ){
         // bind the parameters of the constructor to the instance variables of the class
         this.competitorName = competitorName;
-        this.competitorNumber = competitorNumber;
         this.age = age;
         this.height = height; // measured in cm
         this.weight = weight; // measured in kg
         this.country = country;
         this.level = level;
+        this.competitorEmail = competitorEmail;
         this.scores = scores;
     }
 
     // getters
     public String getCompetitorName() {
         return this.competitorName.getFirstName() + " " + this.competitorName.getLastName();
+    }
+
+    public String getCompetitorEmail(){
+        return this.competitorEmail;
     }
 
     public int getCompetitorNumber() {
@@ -103,46 +109,9 @@ public class OHCompetitorClass {
         return this.level;
     }
 
-    public float getOverallScore(){
-        // ****************
-        // weighted points for each level:-
-        // level 1 - 1 point
-        // level 2 - 3 points
-        // level 3 - 5 points
-        // level 4 - 10 points
-        // ***************
-        // To calculate the average score:
-        // 1. get the competitor level
-        // 2. loop through the scores array
-        // 3. for each score in the scores array multiply it by the corresponding weighted points for that level
-        // 4. add it to sum
-        // 5. divide the total sum by 5
-        // 6. scale the result to 5
-        //*******************
-        int sum = 0;
-        int level = this.getLevel();
+    abstract float getOverallScore();
 
-        int scaleX = 1;
-        if (level == 2) scaleX = 3;
-        if (level == 3) scaleX = 5;
-        if (level == 4) scaleX = 10;
-
-        int[] scores = this.getScoreArray();
-        for(int i = 0 ; i < this.getScoreArray().length; i++){
-            switch (level) {
-                case 1 -> sum += (scores[i]);
-                case 2 -> sum += (scores[i] * 3);
-                case 3 -> sum += (scores[i] * 5);
-                case 4 -> sum += (scores[i] * 10);
-                default -> {
-                    continue;
-                }
-            }
-        }
-
-        float sumScore = (float)sum;
-        return (sumScore / (25 * scaleX)) * 5;
-    }
+    abstract String getCategory();
 
     // Using StringBuilder to convert the String array to String and delimiter to separate the arrays
     public String convertStringArrayToString(int[] strArr, String delimiter) {

@@ -1,8 +1,10 @@
+import java.text.*;
 import java.util.ArrayList;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 
 public class CompetitorList {
 
@@ -42,6 +44,45 @@ public class CompetitorList {
 
         String footer = "############################################################\n";
         return (header + body + footer);
+    }
+
+    public ArrayList<OHCompetitorClass> addCompetitor(
+            String firstName,
+            String lastName,
+            String competitorEmail,
+            String category,
+            String dob,
+            String height,
+            String weight,
+            String country,
+            String level
+    ){
+
+        int[] scores = {0,0,0,0,0};
+        Name name = new Name(firstName, lastName);
+        // at this point, this data has already been cleaned
+        // convert the data to the valid
+        // data types
+        OHRunnerCompetitorClass competitor = new OHRunnerCompetitorClass(
+                name,
+                competitorEmail,
+                12,
+                23.1,
+                12.3,
+                "Nigeria",
+                2,
+                scores
+        );
+        if (category.equalsIgnoreCase("running")){
+
+        }else if (category.equalsIgnoreCase("swimming")){
+
+        }else {
+
+        }
+        System.out.println("firing");
+        this.competitors.add(competitor);
+        return this.competitors;
     }
 
     public float[] getCompetitorsScores() {
@@ -121,4 +162,97 @@ public class CompetitorList {
              System.out.println("competitor with number " + competitorNumber + " not found");
          }
     }
+
+
+    public String validate(
+            String name,
+            String email,
+            String dob,
+            String category,
+            String level,
+            String height,
+            String weight
+    ){
+        // validates the input data and returns a string
+        // containing validation information if it fails
+        // else it returns an empty string
+
+        if (name.equalsIgnoreCase("")){
+            return "Competitor Name is required";
+        }
+
+        if (!(name.split(" ").length == 2)){
+            return "Please enter name in format 'lastName firstName'";
+        }
+
+        if (email.equalsIgnoreCase("")){
+            return "Competitor Email is required";
+        }
+
+        if (dob.equalsIgnoreCase("")){
+            return "Date of birth is required";
+        }
+
+        if (category.equalsIgnoreCase("")){
+            return "Category is required";
+        }
+
+        if (level.equalsIgnoreCase("")){
+            return "Level is required";
+        }
+
+        if (height.equalsIgnoreCase("")){
+            return "Height is required";
+        }
+
+        if (weight.equalsIgnoreCase("")){
+            return "Weight is required";
+        }
+
+        try{
+            Float.parseFloat(height);
+        }catch(NumberFormatException ex){
+            return "Please enter a valid number or float for height";
+        }
+
+        try{
+            Float.parseFloat(weight);
+        }catch(NumberFormatException ex){
+            return "Please enter a valid number or float for weight";
+        }
+
+        try{
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            df.setLenient(false);
+            df.parse(dob);
+
+        }catch(ParseException ex){
+            return "Please enter a valid date in the format YYYY-MM-DD e.g. 2020-01-31";
+        }
+
+        // check if the user email already exist
+        Boolean doesEmailExist = this.validateCompetitorEmail(email);
+
+        if (doesEmailExist){
+            return "This competitor email already exists\n";
+        }
+
+        return "";
+    }
+
+    public Boolean validateCompetitorEmail(String email){
+
+        Boolean found = false;
+
+        for ( OHCompetitorClass competitor : this.competitors ){
+
+            if (email.equalsIgnoreCase(competitor.getCompetitorEmail())){
+                found = true;
+                break;
+            }
+        }
+
+        return found;
+    }
+
 }

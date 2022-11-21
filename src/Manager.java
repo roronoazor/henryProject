@@ -6,13 +6,14 @@ import java.io.FileNotFoundException;
 
 public class Manager {
         private CompetitorList competitorList;
+        private CompetitorGUInterface guiInterface;
         public Manager(String path) throws FileNotFoundException {
 
             // constructor for the manager class
             // use the path of the file to create a file object, account for situations where the file does not exist
             //File cfile = new File(".");
             //System.out.println(cfile.getAbsolutePath());
-            File file = new File("src/Sports/" + path);
+            File file = new File("src/" + path);
 
             // File file = new File(path);
 
@@ -49,17 +50,18 @@ public class Manager {
                         Integer.parseInt(attributeList.get(11).trim()),
                 };
 
-                Name compName = new Name(firstName, lastName);
-                OHCompetitorClass competitor = new OHCompetitorClass(
-                        compName, competitorNumber, age, height, weight, country, level, scores
-                );
-
-                // add the new created competitor to the list of competitors
-                listOfCompetitors.add(competitor);
+//                Name compName = new Name(firstName, lastName);
+//                OHCompetitorClass competitor = new OHCompetitorClass(
+//                        compName, competitorNumber, age, height, weight, country, level, scores
+//                );
+//
+//                // add the new created competitor to the list of competitors
+//                listOfCompetitors.add(competitor);
 
 
             }
             this.competitorList = new CompetitorList(listOfCompetitors);
+            this.guiInterface = new CompetitorGUInterface(competitorList);
         }
 
         public Manager() throws FileNotFoundException {
