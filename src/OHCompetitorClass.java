@@ -109,6 +109,11 @@ abstract class OHCompetitorClass {
         return this.level;
     }
 
+    public int[] setScores(int[] scores){
+        this.scores = scores;
+        return this.scores;
+    }
+
     abstract float getOverallScore();
 
     abstract String getCategory();
@@ -174,8 +179,9 @@ abstract class OHCompetitorClass {
         }else {
             return "Expert";
         }
-
     }
+
+
 
     public String getScoresString(){
         return (

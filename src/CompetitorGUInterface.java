@@ -15,7 +15,7 @@ public class CompetitorGUInterface {
         JFrame frame = new JFrame("Main Page");
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        JLabel label = new JLabel("JFrame By Example");
+        JLabel label = new JLabel("Options");
 
         // BUTTONS //
         JButton registrationButton = new JButton("Register Competitor");
@@ -209,6 +209,7 @@ public class CompetitorGUInterface {
             public void actionPerformed(ActionEvent actionEvent) {
                 JPanel panel = new JPanel();
                 JFrame formFrame = new JFrame("Competitor Details Form");
+                String selectedCompetitorNumber;
 
                 formFrame.setSize(new Dimension(500,500));
                 formFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -228,54 +229,126 @@ public class CompetitorGUInterface {
                 searchButton.setBounds(390, 20, 95, 25);
                 panel.add(searchButton);
 
+                JLabel notificationLabel = new JLabel("");
+                notificationLabel.setBounds(10,40, 265, 25);
+                panel.add(notificationLabel);
+
+                JLabel competitorNumberLabel = new JLabel("");
+                competitorNumberLabel.setBounds(220,40, 265, 25);
+                panel.add(competitorNumberLabel);
+
                 JLabel eventLabel1 = new JLabel("Score Event 1");
-                eventLabel1.setBounds(10,50, 265, 25);
+                eventLabel1.setBounds(10,70, 265, 25);
                 panel.add(eventLabel1);
 
                 SpinnerModel value = new SpinnerNumberModel(0, 0, 5, 1);
                 JSpinner score1 = new JSpinner(value);
-                score1.setBounds(220,50, 265, 25);
+                score1.setBounds(220,70, 265, 25);
                 panel.add(score1);
 
                 JLabel eventLabel2 = new JLabel("Score Event 2");
-                eventLabel2.setBounds(10,80, 265, 25);
+                eventLabel2.setBounds(10,100, 265, 25);
                 panel.add(eventLabel2);
 
                 SpinnerModel value2 = new SpinnerNumberModel(0, 0, 5, 1);
                 JSpinner score2 = new JSpinner(value2);
-                score2.setBounds(220,80, 265, 25);
+                score2.setBounds(220,100, 265, 25);
                 panel.add(score2);
 
                 JLabel eventLabel3 = new JLabel("Score Event 3");
-                eventLabel3.setBounds(10,110, 265, 25);
+                eventLabel3.setBounds(10,130, 265, 25);
                 panel.add(eventLabel3);
 
                 SpinnerModel value3 = new SpinnerNumberModel(0, 0, 5, 1);
                 JSpinner score3 = new JSpinner(value3);
-                score3.setBounds(220,110, 265, 25);
+                score3.setBounds(220,130, 265, 25);
                 panel.add(score3);
 
                 JLabel eventLabel4 = new JLabel("Score Event 4");
-                eventLabel4.setBounds(10,140, 265, 25);
+                eventLabel4.setBounds(10,160, 265, 25);
                 panel.add(eventLabel4);
 
                 SpinnerModel value4 = new SpinnerNumberModel(0, 0, 5, 1);
                 JSpinner score4 = new JSpinner(value4);
-                score4.setBounds(220,140, 265, 25);
+                score4.setBounds(220,160, 265, 25);
                 panel.add(score4);
 
                 JLabel eventLabel5 = new JLabel("Score Event 5");
-                eventLabel5.setBounds(10,170, 265, 25);
+                eventLabel5.setBounds(10,190, 265, 25);
                 panel.add(eventLabel5);
 
                 SpinnerModel value5 = new SpinnerNumberModel(0, 0, 5, 1);
                 JSpinner score5 = new JSpinner(value5);
-                score5.setBounds(220,170, 265, 25);
+                score5.setBounds(220,190, 265, 25);
                 panel.add(score5);
 
                 JButton button = new JButton("Submit");
-                button.setBounds(10, 200, 200, 25);
+                button.setBounds(10, 220, 200, 25);
                 panel.add(button);
+
+                JLabel postText = new JLabel("");
+                postText.setBounds(10,250, 265, 25);
+                panel.add(postText);
+
+                // search button
+                searchButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent actionEvent) {
+
+                        notificationLabel.setText("");
+                        competitorNumberLabel.setText("");
+                        postText.setText("");
+
+                        score1.setValue(0);
+                        score2.setValue(0);
+                        score3.setValue(0);
+                        score4.setValue(0);
+                        score5.setValue(0);
+
+                        OHCompetitorClass competitor = competitorList.findByCompetitorNumber(competitorNumber.getText().trim());
+
+                        if (competitor == null){
+                            notificationLabel.setText("Not Found");
+                            return;
+                        }
+                        notificationLabel.setText("Found " + competitor.getCompetitorName());
+                        competitorNumberLabel.setText(competitor.getCompetitorNumber());
+
+                        int[] scores = competitor.getScoreArray();
+
+                        score1.setValue(scores[0]);
+                        score2.setValue(scores[1]);
+                        score3.setValue(scores[2]);
+                        score4.setValue(scores[3]);
+                        score5.setValue(scores[4]);
+
+                    }
+                });
+
+                // submit action
+                button.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent actionEvent) {
+                        String competitorNumber = competitorNumberLabel.getText();
+                        OHCompetitorClass competitor = competitorList.findByCompetitorNumber(competitorNumber);
+
+                        if (competitor == null){
+                            return;
+                        }
+
+                        int[] scores = {
+                                (int) score1.getValue(),
+                                (int) score2.getValue(),
+                                (int) score3.getValue(),
+                                (int) score4.getValue(),
+                                (int) score5.getValue(),
+                        };
+                        competitor.setScores(scores);
+                        postText.setText("Scores submitted successfully");
+                        return;
+
+                    }
+                });
 
                 formFrame.setVisible(true);
             }
