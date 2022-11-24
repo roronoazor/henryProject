@@ -30,7 +30,13 @@ public class OHSwimmerCompetitorClass extends OHCompetitorClass {
     }
 
     public float getOverallScore(){
-        return Float.parseFloat("1.2");
+
+        int[] scores = this.getScoreArray();
+
+        int totalPoints =  (scores[0]*5) + (scores[1]*5) + (scores[2]*5) + (scores[3]*5) + (scores[4]*5) ;
+        float scaledDown = (float) totalPoints / 125;
+
+        return scaledDown * 5;
     }
 
     public String getCompetitionDescription(){

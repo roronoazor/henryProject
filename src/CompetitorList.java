@@ -35,6 +35,10 @@ public class CompetitorList {
         return (header + body + footer);
     }
 
+    public ArrayList<OHCompetitorClass> getCompetitors(){
+        return this.competitors;
+    }
+
     public String getCompetitorsFullList(){
         String header = "################## COMPETITORS LIST ########################\n";
         StringBuilder body = new StringBuilder();
@@ -182,12 +186,14 @@ public class CompetitorList {
     
     public void getCompetitorsReport(){
         try {
+            System.out.println("starting");
             FileWriter fileReport = new FileWriter("src/report.txt");
             fileReport.write(this.getCompetitorsFullList());
             fileReport.write(this.getStatisticsReport());
             fileReport.write(this.getHighestScoredCompetitor());
             fileReport.close();
             this.getStatisticsReport();
+            System.out.println("done");
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();

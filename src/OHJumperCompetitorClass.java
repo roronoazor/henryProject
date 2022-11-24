@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class OHJumperCompetitorClass extends OHCompetitorClass {
 
     private String category = "jumping";
@@ -30,7 +32,11 @@ public class OHJumperCompetitorClass extends OHCompetitorClass {
     }
 
     public float getOverallScore(){
-        return Float.parseFloat("1.2");
+
+        int[] scores = this.getScoreArray();
+        int sum = scores[0] + scores[1] + scores[2] + scores[3] + scores[4];
+
+        return (float) sum/5;
     }
 
     public String getCompetitionDescription(){

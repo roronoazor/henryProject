@@ -30,7 +30,13 @@ public class OHRunnerCompetitorClass extends OHCompetitorClass{
     }
 
     public float getOverallScore(){
-        return Float.parseFloat("1.2");
+
+        int[] scores = this.getScoreArray();
+
+        int totalPoints =  scores[0] + (scores[1]*2) + (scores[2]*3) + (scores[3]*4) + (scores[4]*5);
+        float scaledDown = (float) totalPoints / 75;
+
+        return scaledDown * 5;
     }
 
     public String getCompetitionDescription(){

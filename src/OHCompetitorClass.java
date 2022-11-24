@@ -136,15 +136,16 @@ abstract class OHCompetitorClass {
         double height = this.getHeight();
         double weight = this.getWeight();
         String country = this.getCountry();
-        int level = this.getLevel();
+        String level = this.getLevelString();
+        String category = this.getCategory();
 
         // use the variable to format the text
         String fullDetails = String.format(
                 "Competitor Number: %s, Competitor Name: %s, Age: %d," +
-                        "Height: %.2f (cm), Weight: %.2f (kg), Country: %s, level: %d, " +
+                        "Height: %.2f (cm), Weight: %.2f (kg), Country: %s, level: %s, Category: %s " +
                         "and received these scores: %s, which gives him an overall score of %.2f",
                 competitorNumber, competitorName, age, height, weight, country,
-                level, this.convertStringArrayToString(this.getScoreArray(), ","), this.getOverallScore()
+                level, category, this.convertStringArrayToString(this.getScoreArray(), ","), this.getOverallScore()
         );
 
         // return full Details

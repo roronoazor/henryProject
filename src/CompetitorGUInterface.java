@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.*;
 
@@ -21,6 +22,8 @@ public class CompetitorGUInterface {
         JButton registrationButton = new JButton("Register Competitor");
         JButton scoreCompetitorButton = new JButton("Score Competitor");
         JButton detailCompetitorButton = new JButton("View Competitor Detail");
+        JButton printReportButton = new JButton("Print Report");
+        JButton competitorsButton = new JButton("View Competitors");
 
         label.setAlignmentX(JComponent.CENTER_ALIGNMENT);
         label.setAlignmentX(JComponent.CENTER_ALIGNMENT);
@@ -30,6 +33,10 @@ public class CompetitorGUInterface {
         scoreCompetitorButton.setAlignmentY(JComponent.CENTER_ALIGNMENT);
         detailCompetitorButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
         detailCompetitorButton.setAlignmentY(JComponent.CENTER_ALIGNMENT);
+        printReportButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+        printReportButton.setAlignmentY(JComponent.CENTER_ALIGNMENT);
+        competitorsButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+        competitorsButton.setAlignmentY(JComponent.CENTER_ALIGNMENT);
 
         // ACTIONS //
         //  on click of registration button //
@@ -287,7 +294,7 @@ public class CompetitorGUInterface {
                 panel.add(button);
 
                 JLabel postText = new JLabel("");
-                postText.setBounds(10,250, 265, 25);
+                postText.setBounds(10,250, 565, 25);
                 panel.add(postText);
 
                 // search button
@@ -344,9 +351,10 @@ public class CompetitorGUInterface {
                                 (int) score5.getValue(),
                         };
                         competitor.setScores(scores);
-                        postText.setText("Scores submitted successfully");
+                        postText.setText(
+                                "Scores submitted successfully, overall score of competitor is " +
+                                competitor.getOverallScore());
                         return;
-
                     }
                 });
 
@@ -477,6 +485,54 @@ public class CompetitorGUInterface {
             }
         });
 
+        printReportButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                competitorList.getCompetitorsReport();
+            }
+        });
+
+
+        competitorsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                JPanel panel = new JPanel();
+                JFrame formFrame = new JFrame("Competitors");
+
+                formFrame.setSize(new Dimension(500,500));
+                formFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                formFrame.add(panel);
+
+                panel.setLayout(null);
+
+                ArrayList<OHCompetitorClass> competitors = competitorList.getCompetitors();
+                Object[][] competitorsData = new Object[competitors.size()][5];
+                for (int row = 0; row < competitors.size(); row++) {
+                    for (int col = 0; col < competitorsData[row].length; col++) {
+                        if (col == 0) {
+                            competitorsData[row][col] = competitors.get(row).getCompetitorNumber();
+                        }else if (col == 1) {
+                            competitorsData[row][col] = competitors.get(row).getCompetitorName();
+                        }else if ( col == 2 ) {
+                            competitorsData[row][col] = competitors.get(row).getCategory();
+                        }else if ( col == 3 ) {
+                            competitorsData[row][col] = competitors.get(row).getLevelString();
+                        }else {
+                            competitorsData[row][col] = competitors.get(row).getOverallScore();
+                        }
+                    }
+                }
+                String[] column={"Competitor Number","Competitor Name","Category", "Level", "Overall Score"};
+
+                JTable jt = new JTable(competitorsData, column);
+                jt.setBounds(30,40,200,300);
+                JScrollPane sp=new JScrollPane(jt);
+
+                formFrame.add(sp);
+                formFrame.setVisible(true);
+            }
+        });
+
         panel.add(label);
         panel.add(Box.createVerticalStrut(5));
         panel.add(registrationButton);
@@ -484,6 +540,11 @@ public class CompetitorGUInterface {
         panel.add(scoreCompetitorButton);
         panel.add(Box.createVerticalStrut(5));
         panel.add(detailCompetitorButton);
+        panel.add(Box.createVerticalStrut(5));
+        panel.add(printReportButton);
+        panel.add(Box.createVerticalStrut(5));
+        panel.add(competitorsButton);
+
 
         frame.add(panel);
         frame.setSize(200, 300);

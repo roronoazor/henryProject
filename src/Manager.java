@@ -29,7 +29,7 @@ public class Manager {
                 String competitorString = sc.nextLine();
                 ArrayList<String> attributeList = parseCompetitorString(competitorString);
 
-                int competitorNumber = Integer.parseInt(attributeList.get(0).trim());
+                String category = attributeList.get(0).trim();
                 String competitorName = attributeList.get(1).trim();
                 System.out.println(competitorName);
                 String[] namesArray =  competitorName.split(" ");
@@ -41,6 +41,7 @@ public class Manager {
                 double weight = Double.parseDouble(attributeList.get(4).trim());
                 int age = Integer.parseInt(attributeList.get(6).trim());
                 int level =  Integer.parseInt(attributeList.get(2).trim());
+                String compEmail = attributeList.get(12).trim();
 
                 int[] scores = {
                         Integer.parseInt(attributeList.get(7).trim()),
@@ -50,13 +51,48 @@ public class Manager {
                         Integer.parseInt(attributeList.get(11).trim()),
                 };
 
-//                Name compName = new Name(firstName, lastName);
-//                OHCompetitorClass competitor = new OHCompetitorClass(
-//                        compName, competitorNumber, age, height, weight, country, level, scores
-//                );
-//
-//                // add the new created competitor to the list of competitors
-//                listOfCompetitors.add(competitor);
+                OHCompetitorClass competitor = null;
+                Name compName = new Name(firstName, lastName);
+                if (category.equalsIgnoreCase("swimming")){
+                  competitor = new OHSwimmerCompetitorClass(
+                        compName,
+                        compEmail,
+                        age,
+                        height,
+                        weight,
+                        country,
+                        level,
+                        scores
+                  );
+                }else if (category.equalsIgnoreCase("running")){
+                    competitor = new OHRunnerCompetitorClass(
+                            compName,
+                            compEmail,
+                            age,
+                            height,
+                            weight,
+                            country,
+                            level,
+                            scores
+                    );
+                }else{
+                    competitor = new OHJumperCompetitorClass(
+                            compName,
+                            compEmail,
+                            age,
+                            height,
+                            weight,
+                            country,
+                            level,
+                            scores
+                    );
+                }
+
+                String competitorNumber = this.generateCompetitorNumber(competitor, listOfCompetitors.size());
+                competitor.setCompetitorNumber(competitorNumber);
+
+                // add the new created competitor to the list of competitors
+                listOfCompetitors.add(competitor);
 
 
             }
@@ -79,4 +115,27 @@ public class Manager {
         public void findCompetitor(String competitorNumber){
             this.competitorList.findByCompetitorNumber(competitorNumber);
         }
+
+    public String generateCompetitorNumber(OHCompetitorClass competitor, int size){
+
+        // format used
+        // YYYY/category/serialNumber
+
+        // this allows for a million competitors with unique serialNumber
+        String serialNumber = String.format("%06d", (size + 1));
+        String category = competitor.getCategory();
+        String categoryCode = "";
+
+        if (category.equalsIgnoreCase("running")){
+            categoryCode = "101";
+        }else if (category.equalsIgnoreCase("swimming")){
+            categoryCode = "102";
+
+        }else{
+            categoryCode = "103";
+        }
+
+        return "2022/" + categoryCode + "/" + serialNumber;
+    }
+
 }
