@@ -497,7 +497,7 @@ public class CompetitorGUInterface {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 JPanel panel = new JPanel();
-                JFrame formFrame = new JFrame("Competitors");
+                JFrame formFrame = new JFrame("All Competitors");
 
                 formFrame.setSize(new Dimension(500,500));
                 formFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -525,10 +525,13 @@ public class CompetitorGUInterface {
                 String[] column={"Competitor Number","Competitor Name","Category", "Level", "Overall Score"};
 
                 JTable jt = new JTable(competitorsData, column);
-                jt.setBounds(30,40,200,300);
+                jt.setBounds(10,100,200,300);
+                jt.setAutoCreateRowSorter(true);
                 JScrollPane sp=new JScrollPane(jt);
 
                 formFrame.add(sp);
+
+
                 formFrame.setVisible(true);
             }
         });
